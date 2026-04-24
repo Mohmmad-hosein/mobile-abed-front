@@ -1,0 +1,13 @@
+@import "tailwindcss";
+
+body {
+  font-family: "Peyda-web", sans-serif;
+}
+
+input {
+ outline: none;
+}
+
+::selection{
+  background: none;
+}
