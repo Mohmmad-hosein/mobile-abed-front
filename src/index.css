@@ -1,7 +1,19 @@
 @import "tailwindcss";
 
+@font-face {
+    font-family: 'Peyda-web';
+    src: url('./assets/fonts/PeydaWeb.woff2') format('woff2'),
+         url('./assets/fonts/PeydaWeb.woff2') format('woff'),
+         url('./assets/fonts/PeydaWeb.woff2') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap; 
+}
+
+
 body {
   font-family: "Peyda-web", sans-serif;
+  
 }
 
 input {
@@ -10,4 +22,67 @@ input {
 
 ::selection{
   background: none;
+}
+
+p {
+  font-family: "peyda-web" , sans-serif;
+}
+
+.btn-1 {
+    width: 250px;
+    transition: all 0.3s ease;
+    align-items: center;
+    cursor: pointer;
+    font-weight: 800; /* font-extrabold معادل 800 */
+    border-radius: 8px;
+    height: 70px;
+    border-width: 4px;
+    border-style: solid;
+    border-color: #1A0873;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); /* shadow-2xl */
+    display: flex;
+    justify-content: center;
+    color: #1A0873;
+    z-index: 10000;
+    font-size: 28px;
+}
+
+.btn-1:hover {
+    color: white;
+    background-color: #1A0873;
+}
+
+/* Chrome, Edge, Opera */
+
+::-webkit-scrollbar {
+  width: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f8fafc;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(
+    180deg,
+    #2563eb,
+    #60a5fa
+  );
+  border-radius: 20px;
+  border: 2px solid #f8fafc;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(
+    180deg,
+    #1d4ed8,
+    #3b82f6
+  );
+}
+
+/* Firefox */
+
+html {
+  scrollbar-width: thin;
+  scrollbar-color: #2563eb #f8fafc;
 }
