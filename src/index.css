@@ -86,3 +86,7 @@ html {
   scrollbar-width: thin;
   scrollbar-color: #2563eb #f8fafc;
 }
+
+.zindex {
+  z-index: 10000;
+}

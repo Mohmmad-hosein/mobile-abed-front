@@ -6,6 +6,16 @@ interface FloatingInputProps {
   width: number | string;
   height: number | string;
   textarea?: boolean;
+
+  name?: string;
+  type?: string;
+  value?: string;
+  onChange?: (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => void;
+  autoComplete?: string;
+  placeholder?: string;
+  disabled?: boolean;
 }
 
 const FloatingInput: FC<FloatingInputProps> = ({
@@ -13,18 +23,25 @@ const FloatingInput: FC<FloatingInputProps> = ({
   width,
   height,
   textarea = false,
+
+  name,
+  type = "text",
+  value = "",
+  onChange,
+  autoComplete,
+  placeholder,
+  disabled = false,
 }) => {
   const [focused, setFocused] = useState(false);
-  const [value, setValue] = useState("");
 
-  const active = focused || value.length > 0;
+  const active = focused || (value?.length ?? 0) > 0;
 
   const labelAnimate = {
-  top: active ? -12 : textarea ? 22 : "50%",
-  right: 18,
-  y: active ? 0 : textarea ? 0 : "-50%",
-  scale: active ? 0.9 : 1,
-};
+    top: active ? -12 : textarea ? 22 : "50%",
+    right: 18,
+    y: active ? 0 : textarea ? 0 : "-50%",
+    scale: active ? 0.9 : 1,
+  };
 
   return (
     <div
@@ -46,11 +63,14 @@ const FloatingInput: FC<FloatingInputProps> = ({
 
       {textarea ? (
         <textarea
+          name={name}
           value={value}
-          onChange={(e) => setValue(e.target.value)}
+          onChange={onChange}
+          autoComplete={autoComplete}
+          placeholder={placeholder}
+          disabled={disabled}
           onFocus={() => setFocused(true)}
           onBlur={() => setFocused(false)}
-          dir="rtl"
           className="
             w-full
             h-full
@@ -72,11 +92,33 @@ const FloatingInput: FC<FloatingInputProps> = ({
         />
       ) : (
         <input
+          name={name}
+          type={type}
           value={value}
-          onChange={(e) => setValue(e.target.value)}
+          onChange={onChange}
+          autoComplete={autoComplete}
+          placeholder={placeholder}
+          disabled={disabled}
           onFocus={() => setFocused(true)}
           onBlur={() => setFocused(false)}
-          className="w-full font-black items-end text-right text-[#1A0873] h-full rounded-xl border-[3px] border-[#1A0873] outline-none px-5 text-lg"
+          className="
+            w-full
+            h-full
+            resize-none
+            rounded-xl
+            border-[3px]
+            border-[#1A0873]
+            outline-none
+            px-5
+            pt-5
+            pb-5
+            text-lg
+            text-right
+            font-black
+            text-[#1A0873]
+            leading-8
+            overflow-y-auto
+        "
         />
       )}
     </div>

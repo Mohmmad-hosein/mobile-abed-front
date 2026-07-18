@@ -67,14 +67,30 @@ export default function HeroSection() {
         }}
         whileHover={{
           scale: 1.1,
+          filter: "drop-shadow(0 0 60px rgba(37,99,235,.4))",
           rotate: [0, -5, 5, -5, 0],
           transition: { duration: 0.5 },
         }}
       />
-      <p className="text-[34px] sm:text-[48px] md:text-[60px] lg:text-[73px] w-full md:w-[800px] lg:w-[1080px] font-extrabold leading-tight">
-        دنیای تکنولوژی و الکترونیک در{" "}
-        <span className="text-[#0003CF]">موبایل عابد (آزادگله)</span>
-      </p>
+      <motion.h1
+        initial={{ opacity: 0, y: 40 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8 }}
+        className="
+  text-[38px]
+  md:text-[60px]
+  lg:text-[74px]
+  font-black
+  leading-[1.3]
+  text-right
+  w-full
+  lg:w-[1050px]
+"
+      >
+        دنیای تکنولوژی و الکترونیک در
+        <br />
+        <span className="text-[#1702FF]">موبایل عابد (آزادکله)</span>
+      </motion.h1>
 
       <TypeAnimation
         sequence={[
@@ -86,6 +102,9 @@ export default function HeroSection() {
         wrapper="div"
         speed={70}
         repeat={Infinity}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.6 }}
         className="
     w-full
     sm:w-[90%]
@@ -134,7 +153,7 @@ export default function HeroSection() {
             }}
             whileHover={{
               scale: 1.05,
-              y: -8,
+              y: -6,
               backgroundColor: "#1A0873",
               color: "#ffffff",
               boxShadow: "0px 20px 40px rgba(26,8,115,.35)",
