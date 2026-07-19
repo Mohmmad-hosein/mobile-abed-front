@@ -16,6 +16,8 @@ interface FloatingInputProps {
   autoComplete?: string;
   placeholder?: string;
   disabled?: boolean;
+
+  theme?: "primary" | "white";
 }
 
 const FloatingInput: FC<FloatingInputProps> = ({
@@ -31,10 +33,18 @@ const FloatingInput: FC<FloatingInputProps> = ({
   autoComplete,
   placeholder,
   disabled = false,
+  theme = "primary",
 }) => {
   const [focused, setFocused] = useState(false);
 
   const active = focused || (value?.length ?? 0) > 0;
+
+  const isWhite = theme === "white";
+
+  const borderColor = isWhite ? "border-white" : "border-[#1A0873]";
+  const textColor = isWhite ? "text-white" : "text-[#1A0873]";
+  const labelBg = isWhite ? "bg-[#0A003B]" : "bg-white";
+  const labelText = isWhite ? "text-white" : "text-[#0A003B]";
 
   const labelAnimate = {
     top: active ? -12 : textarea ? 22 : "50%",
@@ -56,7 +66,7 @@ const FloatingInput: FC<FloatingInputProps> = ({
         transition={{
           duration: 0.22,
         }}
-        className="absolute bg-white px-2 text-[#1A0873] font-black text-xl pointer-events-none rounded-md"
+        className={`absolute px-2  font-black text-xl pointer-events-none rounded-md ${labelBg} ${labelText}`}
       >
         {label}
       </motion.label>
@@ -71,13 +81,12 @@ const FloatingInput: FC<FloatingInputProps> = ({
           disabled={disabled}
           onFocus={() => setFocused(true)}
           onBlur={() => setFocused(false)}
-          className="
+          className={`
             w-full
             h-full
             resize-none
             rounded-xl
             border-[3px]
-            border-[#1A0873]
             outline-none
             px-5
             pt-5
@@ -85,10 +94,13 @@ const FloatingInput: FC<FloatingInputProps> = ({
             text-lg
             text-right
             font-black
-            text-[#1A0873]
             leading-8
             overflow-y-auto
-        "
+            ${borderColor}
+${textColor}
+
+${isWhite ? "placeholder:text-white/40" : "placeholder:text-[#1A0873]/40"}
+        `}
         />
       ) : (
         <input
@@ -101,13 +113,12 @@ const FloatingInput: FC<FloatingInputProps> = ({
           disabled={disabled}
           onFocus={() => setFocused(true)}
           onBlur={() => setFocused(false)}
-          className="
+          className={`
             w-full
             h-full
             resize-none
             rounded-xl
             border-[3px]
-            border-[#1A0873]
             outline-none
             px-5
             pt-5
@@ -115,10 +126,12 @@ const FloatingInput: FC<FloatingInputProps> = ({
             text-lg
             text-right
             font-black
-            text-[#1A0873]
             leading-8
             overflow-y-auto
-        "
+            ${borderColor}
+${textColor}
+${isWhite ? "placeholder:text-white/40" : "placeholder:text-[#1A0873]/40"}
+        `}
         />
       )}
     </div>

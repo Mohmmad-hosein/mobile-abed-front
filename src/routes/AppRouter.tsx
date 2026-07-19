@@ -3,8 +3,9 @@ import MainLayout from "../layout/MainLayout";
 import Home from "../pages/home";
 import NotFound from "../pages/notFound";
 import AboutUs from "../pages/aboutUs";
-import Login from "../pages/auth/login";
+import Login from "../pages/auth/Login";
 import SignUp from "../pages/auth/SignUp";
+import MobileList from "../pages/mobileList";
 
 const AppRouter = () => {
   return (
@@ -16,6 +17,7 @@ const AppRouter = () => {
             <Route path="/About" element={<AboutUs />} />
             <Route path="/Login" element={<Login />} />
             <Route path="/SignUp" element={<SignUp />} />
+            <Route path="/products" element={<MobileList />} />
           </Routes>
         </MainLayout>
     </BrowserRouter>

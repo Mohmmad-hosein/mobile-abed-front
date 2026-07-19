@@ -1,6 +1,8 @@
 import { motion } from "framer-motion";
 import React, { Component } from "react";
 import MiniCart from "./cart";
+import shadowNumber1 from "../../assets/Ellipse 1.png";
+
 
 const childVariants = {
   hidden: { opacity: 0 },
@@ -30,6 +32,11 @@ export default class WhyMobileAbed extends Component {
         whileInView="visible"
         viewport={{ once: true, amount: 0.2 }}
       >
+              <img
+        src={shadowNumber1}
+        alt="Shadow Number 1"
+        className="w-[885px] absolute -bottom-[400px] left-0 h-[885px]"
+      />
               <div className="w-[1200px] h-full justify-center flex flex-wrap">
         <motion.div
           variants={childVariants}
