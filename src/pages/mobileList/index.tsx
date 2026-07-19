@@ -1,6 +1,8 @@
-import React from "react";
+import React, { useMemo, useState } from "react";
 import FloatingInput from "../../components/ui/FloatingInput";
 import MobileCart from "../../components/mobileCart";
+import Pagination from "../../components/ui/Pagination";
+import { AnimatePresence, motion } from "framer-motion";
 export const mobiles = [
   {
     id: 1,
@@ -68,40 +70,121 @@ export const mobiles = [
 ];
 
 export default function MobileList() {
+  const [search, setSearch] = useState("");
+  const [minPrice, setMinPrice] = useState("");
+  const [maxPrice, setMaxPrice] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 9;
+  const start = (currentPage - 1) * itemsPerPage;
+
+  const [filteredMobiles, setFilteredMobiles] = useState(mobiles);
+
+  const priceToNumber = (price: string) => {
+    return Number(price.replace(/[^\d]/g, ""));
+  };
+
+  const handleFilter = () => {
+    const result = mobiles.filter((mobile) => {
+      const price = priceToNumber(mobile.price);
+
+      const matchName = mobile.title
+        .toLowerCase()
+        .includes(search.toLowerCase());
+
+      const matchMin = minPrice === "" || price >= Number(minPrice);
+
+      const matchMax = maxPrice === "" || price <= Number(maxPrice);
+
+      return matchName && matchMin && matchMax;
+    });
+
+    setFilteredMobiles(result);
+  };
+
+  const currentMobiles = filteredMobiles.slice(start, start + itemsPerPage);
+
+  const totalPages = Math.ceil(filteredMobiles.length / itemsPerPage);
   return (
     <div className="mt-16 flex mb-16 flex-wrap justify-center">
-      <h1 className="text-4xl text-[#1A0873] font-black text-center mb-16 w-full">
+      <motion.h1
+        initial={{ opacity: 0, y: -35 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+        className="text-4xl text-[#1A0873] font-black text-center mb-16 w-full"
+      >
         لیست موبایل ها
-      </h1>
-      <div className="w-[90%] rounded-2xl h-[105px] bg-[#0A003B] flex items-center justify-center gap-12">
-        <button className=" w-[235px] h-[60px] bg-[#1702FF] rounded-lg text-white font-black text-2xl">
-          {" "}
-          اعمال فیلتر{" "}
-        </button>
+      </motion.h1>
+      <motion.div
+        initial={{
+          opacity: 0,
+          y: -25,
+        }}
+        animate={{
+          opacity: 1,
+          y: 0,
+        }}
+        transition={{
+          duration: 0.45,
+          delay: 0.15,
+        }}
+        className="w-[90%] rounded-2xl min-h-[105px] bg-[#0A003B] flex flex-wrap lg:flex-nowrap items-center justify-center gap-9 py-6 px-5"
+      >
+        <motion.button
+          whileHover={{
+            scale: 1.04,
+            boxShadow: "0 10px 35px rgba(23,2,255,.45)",
+          }}
+          whileTap={{
+            scale: 0.96,
+          }}
+          transition={{
+            duration: 0.2,
+          }}
+          onClick={handleFilter}
+          className="w-[235px] h-[60px] bg-[#1702FF] rounded-lg text-white font-black text-2xl"
+        >
+          اعمال فیلتر
+        </motion.button>
         <FloatingInput
           theme="white"
           label="حداکثر قیمت"
           width="215px"
           height={60}
+          type="number"
+          value={maxPrice}
+          onChange={(e) => setMaxPrice(e.target.value)}
         />
         <FloatingInput
           theme="white"
           label="حداقل قیمت"
           width="215px"
           height={60}
+          type="number"
+          value={minPrice}
+          onChange={(e) => setMinPrice(e.target.value)}
         />
         <FloatingInput
           theme="white"
           label="جستجوی نام موبایل"
           width="395px"
           height={60}
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
         />
+      </motion.div>
+      <div className="w-[90%] mt-16 mb-8 flex flex-wrap gap-8 justify-center">
+        <AnimatePresence mode="wait">
+          {" "}
+          {currentMobiles.map((mobile) => (
+            <MobileCart key={mobile.id} data={mobile} />
+          ))}
+        </AnimatePresence>
       </div>
-      <div className="w-[90%] mt-16 flex flex-wrap gap-8 justify-center">
-        {mobiles.map((mobile) => (
-          <MobileCart key={mobile.id} data={mobile} />
-        ))}
-      </div>
+      <Pagination
+        currentPage={currentPage}
+        totalPages={totalPages}
+        onPageChange={setCurrentPage}
+      />
     </div>
   );
 }
