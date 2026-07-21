@@ -1,10 +1,6 @@
 import React, { useEffect, useState } from "react";
-import {
-  motion,
-  useMotionValue,
-  useTransform,
-  useSpring,
-} from "framer-motion";
+import { motion, useMotionValue, useTransform, useSpring } from "framer-motion";
+import { useNavigate } from "react-router-dom";
 
 interface MobileData {
   id: number;
@@ -23,6 +19,8 @@ const CARD_HEIGHT = 540;
 const ROTATION_RANGE = 12;
 
 const MobileCart: React.FC<MobileCartProps> = ({ data }) => {
+  const navigate = useNavigate();
+
   const { title, desc, price, image } = data;
 
   const [animationsEnabled, setAnimationsEnabled] = useState(true);
@@ -52,13 +50,13 @@ const MobileCart: React.FC<MobileCartProps> = ({ data }) => {
   const rotateY = useTransform(
     x,
     [0, CARD_WIDTH],
-    [-ROTATION_RANGE, ROTATION_RANGE]
+    [-ROTATION_RANGE, ROTATION_RANGE],
   );
 
   const rotateX = useTransform(
     y,
     [0, CARD_HEIGHT],
-    [ROTATION_RANGE, -ROTATION_RANGE]
+    [ROTATION_RANGE, -ROTATION_RANGE],
   );
 
   const rotateXSpring = useSpring(rotateX, {
@@ -71,9 +69,7 @@ const MobileCart: React.FC<MobileCartProps> = ({ data }) => {
     damping: 20,
   });
 
-  const handleMouseMove = (
-    event: React.MouseEvent<HTMLDivElement>
-  ) => {
+  const handleMouseMove = (event: React.MouseEvent<HTMLDivElement>) => {
     if (!animationsEnabled) return;
 
     const rect = event.currentTarget.getBoundingClientRect();
@@ -89,6 +85,10 @@ const MobileCart: React.FC<MobileCartProps> = ({ data }) => {
 
   return (
     <motion.div
+      onClick={() => navigate(`/mobile/${data.id}`)}
+      whileTap={{
+        scale: 0.98,
+      }}
       className="w-[380px] h-[540px] rounded-2xl flex flex-wrap justify-center items-center bg-[#1A0873] border-[3px] border-black overflow-hidden cursor-pointer"
       initial={{
         opacity: 0,
@@ -129,9 +129,7 @@ const MobileCart: React.FC<MobileCartProps> = ({ data }) => {
       <motion.div
         className="w-[330px] h-[175px] mt-2 rounded-[8px] bg-[#12054F]/70 flex justify-center items-center overflow-hidden"
         style={{
-          transform: animationsEnabled
-            ? "translateZ(40px)"
-            : "none",
+          transform: animationsEnabled ? "translateZ(40px)" : "none",
         }}
       >
         <img
@@ -140,8 +138,7 @@ const MobileCart: React.FC<MobileCartProps> = ({ data }) => {
           loading="lazy"
           className="w-full h-full object-contain"
           onError={(e) => {
-            e.currentTarget.src =
-              "/images/no-image.png";
+            e.currentTarget.src = "/images/no-image.png";
           }}
         />
       </motion.div>
@@ -149,9 +146,7 @@ const MobileCart: React.FC<MobileCartProps> = ({ data }) => {
       <motion.h1
         className="mt-4 text-3xl text-white font-bold text-center px-3"
         style={{
-          transform: animationsEnabled
-            ? "translateZ(35px)"
-            : "none",
+          transform: animationsEnabled ? "translateZ(35px)" : "none",
         }}
       >
         {title}
@@ -160,9 +155,7 @@ const MobileCart: React.FC<MobileCartProps> = ({ data }) => {
       <motion.p
         className="text-white/80 w-4/6 text-center line-clamp-3"
         style={{
-          transform: animationsEnabled
-            ? "translateZ(25px)"
-            : "none",
+          transform: animationsEnabled ? "translateZ(25px)" : "none",
         }}
       >
         {desc}
@@ -171,14 +164,10 @@ const MobileCart: React.FC<MobileCartProps> = ({ data }) => {
       <motion.div
         className="w-5/6 mt-14 flex justify-end items-center text-white"
         style={{
-          transform: animationsEnabled
-            ? "translateZ(15px)"
-            : "none",
+          transform: animationsEnabled ? "translateZ(15px)" : "none",
         }}
       >
-        <p className="font-bold text-lg">
-          {price}
-        </p>
+        <p className="font-bold text-lg">{price}</p>
       </motion.div>
     </motion.div>
   );

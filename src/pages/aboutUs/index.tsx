@@ -6,7 +6,7 @@ import { motion } from "framer-motion";
 export default class AboutUs extends Component {
   render() {
     return (
-      <div className="mt-16 felx flex-wrap justify-center">
+      <div className="mt-16 flex flex-wrap justify-center">
         <img
           src={shadow}
           alt="Shadow"
