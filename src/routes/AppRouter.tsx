@@ -6,6 +6,7 @@ import AboutUs from "../pages/aboutUs";
 import Login from "../pages/auth/Login";
 import SignUp from "../pages/auth/SignUp";
 import MobileList from "../pages/mobileList";
+import RepairAndSalesConsultation from "../pages/chat";
 
 const AppRouter = () => {
   return (
@@ -18,6 +19,7 @@ const AppRouter = () => {
             <Route path="/Login" element={<Login />} />
             <Route path="/SignUp" element={<SignUp />} />
             <Route path="/products" element={<MobileList />} />
+            <Route path="/chat" element={<RepairAndSalesConsultation />} />
           </Routes>
         </MainLayout>
     </BrowserRouter>

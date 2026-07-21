@@ -4,13 +4,20 @@ import shadowNumber2 from "../../assets/Ellipse 1.png";
 import PhoneIcon from "../../assets/—Pngtree—a 3d mobile phone icon_21261832 1.png";
 import { motion } from "framer-motion";
 import { TypeAnimation } from "react-type-animation";
+import { useNavigate } from "react-router";
 
 export default function HeroSection() {
+  const navigate = useNavigate();
+
   const buttons = [
     { id: 1, title: "مشاوره خرید" },
     { id: 2, title: "مشاوره تعمیرات" },
     { id: 3, title: "سرویس های ما" },
   ];
+
+  const handleButtonClick = () => {
+    navigate("/chat");
+  };
 
   return (
     <div className="h-[480px] mr-4 md:mr-10 lg:mr-20 justify-end flex flex-wrap text-right mt-[80px] md:mt-[116px]">
@@ -137,6 +144,7 @@ export default function HeroSection() {
       >
         {buttons.map((button, index) => (
           <motion.button
+            onClick={handleButtonClick}
             key={button.id}
             className="btn-1 relative"
             initial={{
