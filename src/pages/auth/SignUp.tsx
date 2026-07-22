@@ -1,10 +1,11 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import UserGif from "../../assets/icons8-user.gif";
 import FloatingInput from "../../components/ui/FloatingInput";
 import GoogleIcon from "../../assets/icons8-google-96.png";
 import { motion } from "framer-motion";
+import { FiHome } from "react-icons/fi"; // آیکون خانه
 
 export default function SignUp() {
   const navigate = useNavigate();
@@ -15,233 +16,147 @@ export default function SignUp() {
     password: "",
   });
 
-
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement>
-  ) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value,
     });
   };
 
-
-  const handleSubmit = async (
-    e: React.FormEvent<HTMLFormElement>
-  ) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-
-    if (
-      !formData.username ||
-      !formData.email ||
-      !formData.password
-    ) {
+    if (!formData.username || !formData.email || !formData.password) {
       toast.error("لطفاً تمام فیلدها را پر کنید.");
       return;
     }
 
-
     try {
-
       console.log("Register Data :", formData);
-
-
-      // API بعداً اینجا میاد
-
-      /*
-      const response = await axios.post(
-        "/auth/register",
-        formData
-      );
-
-      toast.success("حساب شما ساخته شد");
-
-      navigate("/login");
-      */
-
-
       toast.success("اطلاعات آماده ارسال است");
-
     } catch (error) {
-
       toast.error("مشکلی در ساخت حساب پیش آمد");
-
       console.log(error);
     }
   };
-
 
   const goToLogin = () => {
     navigate("/login");
   };
 
-
   return (
-    <div className="w-full h-screen flex justify-center items-center">
-
-      <motion.div
-        initial={{ opacity: 0, x: 80 }}
-        animate={{ opacity: 1, x: 0 }}
-        transition={{
-          duration: 0.6,
-          ease: "easeOut",
-        }}
-        className="w-[70%] shadow-[0_10px_25px_rgba(24,3,129,0.5)] h-[90%] rounded-2xl overflow-hidden flex border-[3px] border-black"
+    <div className="relative flex min-h-screen w-full items-center justify-center bg-gray-50 p-4 dir-rtl">
+      {/* دکمه بازگشت به خانه */}
+      <motion.button
+        onClick={() => navigate("/")}
+        whileHover={{ scale: 1.1 }}
+        whileTap={{ scale: 0.9 }}
+        className="absolute top-5 right-5 z-20 flex items-center justify-center rounded-full bg-white p-3 text-gray-700 shadow-md transition-colors hover:bg-gray-100 hover:text-black"
+        title="بازگشت به صفحه اصلی"
       >
+        <FiHome className="h-6 w-6" />
+      </motion.button>
 
-
-        {/* فرم ثبت نام */}
-
-        <div className="w-[65%] h-full gap-6 flex flex-col justify-center items-center">
-
-          <img
+      {/* کارت اصلی - ریسپانسیو */}
+      <motion.div
+        initial={{ opacity: 0, y: 30 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, ease: "easeOut" }}
+        className="relative flex h-auto min-h-[600px] w-full max-w-5xl flex-col-reverse overflow-hidden rounded-3xl border-2 border-black bg-white shadow-2xl md:flex-row"
+      >
+        {/* بخش فرم ثبت‌نام */}
+        <motion.div
+          initial={{ opacity: 0, x: -30 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.6, delay: 0.2 }}
+          className="flex w-full flex-1 flex-col items-center justify-center p-6 sm:p-10 md:w-7/12 lg:w-8/12"
+        >
+          <motion.img
             src={UserGif}
             alt="User"
-            className="w-[150px] h-[150px] mb-8"
+            initial={{ scale: 0.8 }}
+            animate={{ scale: 1 }}
+            transition={{ duration: 0.4 }}
+            className="mb-6 h-28 w-28 sm:h-32 sm:w-32 object-contain"
           />
 
-
-          <form
-            onSubmit={handleSubmit}
-            className="flex flex-col gap-4 w-[488px]"
-          >
-
-
+          <form onSubmit={handleSubmit} className="flex w-full max-w-md flex-col gap-4">
             <FloatingInput
               name="username"
               value={formData.username}
               onChange={handleChange}
-              height={60}
+              height={56}
               width="100%"
               label="نام کاربری"
               autoComplete="username"
             />
-
 
             <FloatingInput
               name="email"
               type="email"
               value={formData.email}
               onChange={handleChange}
-              height={60}
+              height={56}
               width="100%"
               label="ایمیل"
               autoComplete="email"
             />
-
 
             <FloatingInput
               name="password"
               type="password"
               value={formData.password}
               onChange={handleChange}
-              height={60}
+              height={56}
               width="100%"
               label="پسورد"
               autoComplete="new-password"
             />
 
-
-
             <motion.button
               type="submit"
-              whileHover={{
-                scale: 1.03,
-              }}
-              whileTap={{
-                scale: 0.97,
-              }}
-              className="h-[60px] rounded-lg bg-[#1A0873] text-white font-bold"
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              className="mt-2 flex h-14 w-full items-center justify-center rounded-xl bg-[#1A0873] font-bold text-white shadow-lg transition-colors hover:bg-[#120554]"
             >
               ساخت حساب
             </motion.button>
 
-
-
             <motion.button
               type="button"
-              whileHover={{
-                scale: 1.03,
-              }}
-              whileTap={{
-                scale: 0.97,
-              }}
-              className="flex h-[60px] items-center justify-center gap-3 rounded-lg border border-black bg-[#1A0873]/10 font-bold"
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              className="flex h-14 w-full items-center justify-center gap-3 rounded-xl border border-gray-300 bg-gray-50 font-bold text-gray-800 transition-colors hover:bg-gray-100"
             >
-
-              <img
-                src={GoogleIcon}
-                alt="Google"
-                className="w-8 h-8"
-              />
-
-              <span>
-                ثبت نام با گوگل
-              </span>
-
+              <img src={GoogleIcon} alt="Google" className="h-7 w-7" />
+              <span>ثبت‌نام با گوگل</span>
             </motion.button>
-
-
           </form>
+        </motion.div>
 
-        </div>
-
-
-
-
-        {/* بخش سمت راست */}
-
+        {/* بخش بنر بنفش (اطلاعات و هدایت به لاگین) */}
         <motion.div
-          initial={{
-            x: 80,
-            opacity: 0,
-          }}
-          animate={{
-            x: 0,
-            opacity: 1,
-          }}
-          transition={{
-            duration: 0.7,
-          }}
-
-          className="w-[35%] p-8 flex flex-wrap justify-center items-center h-full bg-[#0D004D] border-[3px] border-black"
+          initial={{ opacity: 0, x: 50 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.6, delay: 0.3 }}
+          className="flex w-full flex-col items-center justify-center bg-[#0D004D] p-8 text-white md:w-5/12 lg:w-4/12"
         >
-
-          <div className="w-full flex flex-wrap justify-center items-center gap-14">
-
-
-            <h1 className="text-4xl font-bold w-full text-center text-white">
-              خوش آمدید
-            </h1>
-
-
-            <p className="text-white text-center w-full">
-              با ساخت حساب جدید می‌توانید سفارش‌های خود را مدیریت کنید
+          <div className="flex flex-col items-center gap-6 text-center">
+            <h1 className="text-3xl font-extrabold sm:text-4xl">خوش آمدید</h1>
+            <p className="text-sm font-light leading-relaxed sm:text-base text-gray-200">
+              با ساخت حساب جدید می‌توانید سفارش‌های خود را به راحتی مدیریت کنید.
             </p>
-
-
             <motion.button
               onClick={goToLogin}
-              whileHover={{
-                scale:1.03
-              }}
-              whileTap={{
-                scale:0.97
-              }}
-              className="bg-[#D9D9D9] rounded-3xl w-[300px] h-[70px] text-black font-bold hover:bg-gray-200"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className="mt-2 w-full max-w-[260px] rounded-2xl bg-white py-3.5 text-sm sm:text-base font-bold text-black shadow-md transition-colors hover:bg-gray-200"
             >
               از قبل حساب دارید؟ وارد شوید
             </motion.button>
-
-
           </div>
-
         </motion.div>
-
-
       </motion.div>
-
     </div>
   );
 }

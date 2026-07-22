@@ -18,15 +18,18 @@ export default function CommentCart() {
         group
         relative
         overflow-hidden
-        w-[90%]
-        h-[185px]
-        flex
-        justify-end
+        w-full max-w-[90%] md:max-w-full
+        min-h-[185px]
+        flex flex-col-reverse sm:flex-row
+        justify-between items-center sm:items-start
         rounded-2xl
         border-[3px]
         border-black
         bg-[#D9D9D9]
         transition-all
+        p-5 sm:p-6 md:p-8
+        gap-4 sm:gap-6
+        mx-auto
       "
     >
       {/* خط نور */}
@@ -38,6 +41,7 @@ export default function CommentCart() {
           h-[4px]
           w-[100%]
           bg-[#1A0873]
+          pointer-events-none
         "
         whileHover={{
           left: "100%",
@@ -47,13 +51,14 @@ export default function CommentCart() {
         }}
       />
 
-      <div className="w-[85%] h-full flex flex-wrap justify-end p-10">
+      {/* بخش متن و نام کاربر */}
+      <div className="w-full sm:w-[80%] flex flex-col items-end text-end">
         <motion.h1
           className="
-            w-[250px]
-            h-10
+            w-full max-w-[250px]
+            pb-1
             text-end
-            text-xl
+            text-lg sm:text-xl
             font-extrabold
             border-b-[3px]
             border-black
@@ -65,13 +70,14 @@ export default function CommentCart() {
           user name
         </motion.h1>
 
-        <p className="w-full mt-5 text-xl text-end">
+        <p className="w-full mt-3 sm:mt-4 text-base sm:text-lg md:text-xl text-end leading-relaxed">
           “ممنون بابت تمامی خدمات شما . از رفتار مناسب پرسونل و پایین بودن
           قیمت‌ها راضی بودم”
         </p>
       </div>
 
-      <div className="w-[15%] h-full flex justify-center items-center">
+      {/* بخش تصویر کاربر */}
+      <div className="w-full sm:w-[20%] flex justify-center sm:justify-end items-center shrink-0">
         <motion.img
           src=""
           alt="UserPic"
@@ -84,12 +90,12 @@ export default function CommentCart() {
             stiffness: 300,
           }}
           className="
-            w-[125px]
-            h-[125px]
+            w-[90px] h-[90px] sm:w-[110px] sm:h-[110px] md:w-[125px] md:h-[125px]
             rounded-full
             border-[3px]
             border-black
             shadow-[0px_4px_4px_0px_rgba(26,8,115,0.5)]
+            object-cover
           "
         />
       </div>

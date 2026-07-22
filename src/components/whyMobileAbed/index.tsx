@@ -3,6 +3,12 @@ import React, { Component } from "react";
 import MiniCart from "./cart";
 import shadowNumber1 from "../../assets/Ellipse 1.png";
 
+// تعریف تایپ داده‌های کارت
+export interface WhyUsItem {
+  id: number;
+  title: string;
+  desc: string;
+}
 
 const childVariants = {
   hidden: { opacity: 0 },
@@ -22,46 +28,76 @@ const sectionVariants = {
   },
 };
 
-export default class WhyMobileAbed extends Component {
+interface State {
+  features: WhyUsItem[];
+}
+
+export default class WhyMobileAbed extends Component<{}, State> {
+  // تعریف اطلاعات درخواست‌شده در استیت
+  state: State = {
+    features: [
+      {
+        id: 1,
+        title: "۲ دهه سابقه",
+        desc: "بیش از دو دهه سابقه کار در حوزه موبایل",
+      },
+      {
+        id: 2,
+        title: "بیشترین رضایت",
+        desc: "بیشترین رضایت مشتری در مپ گوگل در ساری",
+      },
+      {
+        id: 3,
+        title: "نمایندگی طلایی",
+        desc: "جزو برترین نمایندگان ایرانسل در مازندران",
+      },
+      {
+        id: 4,
+        title: "تنوع کامل محصول",
+        desc: "عرضه جدیدترین و کامل‌ترین محصولات بازار",
+      },
+    ],
+  };
+
   render() {
     return (
       <motion.div
-        className="mt-64 flex relative flex-wrap justify-center w-full h-[600px]"
+        className="mt-20 md:mt-36 lg:mt-64 flex relative flex-wrap justify-center w-full min-h-[600px] px-4 sm:px-6 lg:px-8 "
         variants={sectionVariants}
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, amount: 0.2 }}
       >
-              <img
-        src={shadowNumber1}
-        alt="Shadow Number 1"
-        className="w-[885px] absolute -bottom-[400px] left-0 h-[885px]"
-      />
-              <div className="w-[1200px] h-full justify-center flex flex-wrap">
-        <motion.div
-          variants={childVariants}
-          className="flex justify-between h-[185px] items-center w-full"
-        >
-          <p className="text-[28px] items-center flex cursor-pointer h-[100px] text-[#1A0873] font-semibold">
-           
-          </p>
-          <div className="flex flex-col h-[100px] gap-4 items-end ">
-            <h1 className="text-[48px] font-semibold text-left">
-              چرا باید موبایل عابد رو انتخاب کنیم؟
-            </h1>
-            <p className="text-black/60 text-[24px] ">
-             دلایل کامل اینکه شما میتونید به ما اعتماد کنید 
-            </p>
+        {/* تصویر سایه پس‌زمینه */}
+        <img
+          src={shadowNumber1}
+          alt="Shadow Number 1"
+          className="w-[400px] md:w-[650px] lg:w-[885px] absolute -bottom-[200px] md:-bottom-[400px] left-0 h-auto pointer-events-none opacity-60 md:opacity-100"
+        />
+
+        <div className="w-full max-w-[1200px] h-full justify-center flex flex-wrap z-10">
+          {/* هدر بخش (عنوان و توضیحات) */}
+          <motion.div
+            variants={childVariants}
+            className="flex flex-col justify-center sm:justify-end min-h-[120px] sm:h-[185px] items-center sm:items-end w-full pb-6"
+          >
+            <div className="flex flex-col h-auto gap-2 sm:gap-4 justify-between items-center sm:items-end text-center sm:text-right">
+              <h1 className="text-2xl sm:text-3xl md:text-[48px] font-semibold">
+                چرا باید موبایل عابد رو انتخاب کنیم؟
+              </h1>
+              <p className="text-black/60 text-base sm:text-xl md:text-[24px]">
+                دلایل کامل اینکه شما میتونید به ما اعتماد کنید
+              </p>
+            </div>
+          </motion.div>
+
+          {/* چیدمان کارت‌ها با گرید ریسپانسیو */}
+          <div className="w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8 mt-6 md:mt-10 justify-items-center">
+            {this.state.features.map((item) => (
+              <MiniCart key={item.id} data={item} />
+            ))}
           </div>
-        </motion.div>
-<div className="w-full flex gap-20 mt-10">
-    <MiniCart/>
-    <MiniCart/>
-    <MiniCart/>
-    <MiniCart/>
-</div>
         </div>
-        
       </motion.div>
     );
   }
