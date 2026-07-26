@@ -114,7 +114,7 @@ export default function HeroSection() {
         transition={{ delay: 0.6 }}
         className="
     w-full
-    sm:w-[90%]
+    sm:w-[85%]
     md:w-[600px]
     lg:w-[730px]
     mt-4

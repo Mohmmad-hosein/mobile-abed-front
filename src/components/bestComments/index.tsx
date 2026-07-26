@@ -25,13 +25,12 @@ export default class BestComment extends Component {
   render() {
     return (
       <motion.div
-        className="my-16 md:my-36 flex relative flex-wrap justify-center w-full h-auto overflow-hidden md:overflow-visible px-4"
+        className="my-16 md:my-36 flex relative flex-wrap justify-center w-full h-auto md:overflow-visible px-4"
         variants={sectionVariants}
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, amount: 0.2 }}
       >
-        {/* تصویر سایه پس‌زمینه با اندازه ریسپانسیو */}
         <img
           src={shadowNumber1}
           alt="Shadow Number 1"
