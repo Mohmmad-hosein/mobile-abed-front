@@ -14,8 +14,16 @@ interface MobileCartProps {
   data: MobileData;
 }
 
-const CARD_WIDTH = 380;
-const CARD_HEIGHT = 540;
+const MOBILE_WIDTH = 300;
+const MOBILE_HEIGHT = 430;
+
+const DESKTOP_WIDTH = 380;
+const DESKTOP_HEIGHT = 540;
+
+const isMobile = window.innerWidth < 640;
+
+const CARD_WIDTH = isMobile ? MOBILE_WIDTH : DESKTOP_WIDTH;
+const CARD_HEIGHT = isMobile ? MOBILE_HEIGHT : DESKTOP_HEIGHT;
 const ROTATION_RANGE = 12;
 
 const MobileCart: React.FC<MobileCartProps> = ({ data }) => {
@@ -89,7 +97,23 @@ const MobileCart: React.FC<MobileCartProps> = ({ data }) => {
       whileTap={{
         scale: 0.98,
       }}
-      className="w-[380px] h-[540px] rounded-2xl flex flex-wrap justify-center items-center bg-[#1A0873] border-[3px] border-black overflow-hidden cursor-pointer"
+className="
+w-[300px]
+h-[430px]
+sm:w-[340px]
+sm:h-[480px]
+lg:w-[380px]
+lg:h-[540px]
+rounded-2xl
+flex flex-wrap
+justify-center
+items-center
+bg-[#1A0873]
+border-[3px]
+border-black
+overflow-hidden
+cursor-pointer
+"
       initial={{
         opacity: 0,
         y: 40,
@@ -136,7 +160,21 @@ const MobileCart: React.FC<MobileCartProps> = ({ data }) => {
           src={image}
           alt={title}
           loading="lazy"
-          className="w-full h-full object-contain"
+className="
+w-[260px]
+h-[140px]
+sm:w-[290px]
+sm:h-[155px]
+lg:w-[330px]
+lg:h-[175px]
+mt-2
+rounded-lg
+bg-[#12054F]/70
+flex
+justify-center
+items-center
+overflow-hidden
+"
           onError={(e) => {
             e.currentTarget.src = "/images/no-image.png";
           }}
@@ -144,7 +182,16 @@ const MobileCart: React.FC<MobileCartProps> = ({ data }) => {
       </motion.div>
 
       <motion.h1
-        className="mt-4 text-3xl text-white font-bold text-center px-3"
+className="
+mt-3
+text-xl
+sm:text-2xl
+lg:text-3xl
+text-white
+font-bold
+text-center
+px-3
+"
         style={{
           transform: animationsEnabled ? "translateZ(35px)" : "none",
         }}
@@ -153,7 +200,15 @@ const MobileCart: React.FC<MobileCartProps> = ({ data }) => {
       </motion.h1>
 
       <motion.p
-        className="text-white/80 w-4/6 text-center line-clamp-3"
+        className="
+text-white/80
+w-5/6
+sm:w-4/6
+text-center
+text-sm
+sm:text-base
+line-clamp-3
+"
         style={{
           transform: animationsEnabled ? "translateZ(25px)" : "none",
         }}
@@ -162,12 +217,21 @@ const MobileCart: React.FC<MobileCartProps> = ({ data }) => {
       </motion.p>
 
       <motion.div
-        className="w-5/6 mt-14 flex justify-end items-center text-white"
+        className="
+w-5/6
+mt-8
+sm:mt-10
+lg:mt-14
+flex
+justify-end
+items-center
+text-white
+"
         style={{
           transform: animationsEnabled ? "translateZ(15px)" : "none",
         }}
       >
-        <p className="font-bold text-lg">{price}</p>
+        <p className="font-bold text-base sm:text-lg">{price}</p>
       </motion.div>
     </motion.div>
   );

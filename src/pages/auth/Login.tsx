@@ -5,10 +5,15 @@ import GoogleIcon from "../../assets/icons8-google-96.png";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
-import { FiHome } from "react-icons/fi"; // آیکون خانه
+import { FiHome } from "react-icons/fi";
+import { useLogin } from "../../hooks/useAuth";
+import { useMutation } from "@tanstack/react-query";
+import { useGoogleLogin } from "@react-oauth/google"; // 🔴 استفاده از هوک به جای کامپوننت
+import api from "../../api/axios";
 
 export default function Login() {
   const navigate = useNavigate();
+  const loginMutation = useLogin();
 
   const [formData, setFormData] = useState({
     username: "",
@@ -22,7 +27,31 @@ export default function Login() {
     });
   };
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  // میوتیشن ارسال توکن گوگل به بک‌اند
+  const googleLoginMutation = useMutation({
+    mutationFn: (token: string) => api.post("/auth/google", { token }),
+    onSuccess: (res) => {
+      localStorage.setItem("token", res.data.token);
+      toast.success("ورود با گوگل موفقیت‌آمیز بود");
+      navigate("/dashboard");
+    },
+    onError: () => {
+      toast.error("خطا در تایید حساب گوگل در سرور");
+    },
+  });
+
+  // 🔴 تابع باز کردن پاپ‌آپ/مدال گوگل
+  const handleGoogleLogin = useGoogleLogin({
+    onSuccess: (tokenResponse) => {
+      // توکن دریافت شده از پاپ‌آپ را به بک‌اند می‌فرستیم
+      googleLoginMutation.mutate(tokenResponse.access_token);
+    },
+    onError: () => {
+      toast.error("ورود با گوگل ناموفق بود");
+    },
+  });
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if (!formData.username || !formData.password) {
@@ -30,13 +59,18 @@ export default function Login() {
       return;
     }
 
-    try {
-      console.log("Login Data :", formData);
-      toast.success("با موفقیت وارد شدید.");
-      navigate("/dashboard");
-    } catch (err: any) {
-      toast.error(err.response?.data?.message || "مشکلی در ورود پیش آمد.");
-    }
+    loginMutation.mutate(
+      {
+        username: formData.username,
+        password: formData.password,
+      },
+      {
+        onSuccess: (data: { message?: string }) => {
+          toast.success(data.message || "با موفقیت وارد شدید.");
+          navigate("/dashboard");
+        },
+      }
+    );
   };
 
   return (
@@ -52,14 +86,14 @@ export default function Login() {
         <FiHome className="h-6 w-6" />
       </motion.button>
 
-      {/* کارت اصلی - ریسپانسیو */}
+      {/* کارت اصلی */}
       <motion.div
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, ease: "easeOut" }}
         className="relative flex h-auto min-h-[600px] w-full max-w-5xl flex-col overflow-hidden rounded-3xl border-2 border-black bg-white shadow-2xl md:flex-row"
       >
-        {/* بخش بنر بنفش (سمت راست در RTL) */}
+        {/* بخش بنر */}
         <motion.div
           initial={{ opacity: 0, x: 50 }}
           animate={{ opacity: 1, x: 0 }}
@@ -68,7 +102,7 @@ export default function Login() {
         >
           <div className="flex flex-col items-center gap-6 text-center">
             <h1 className="text-3xl font-extrabold sm:text-4xl">خوش برگشتید</h1>
-            <p className="text-sm font-light leading-relaxed sm:text-base text-gray-200">
+            <p className="text-sm font-light leading-relaxed text-gray-200 sm:text-base">
               با وارد کردن اطلاعات خودتون، تجربه دوباره استفاده و سفارش از فروشگاه ما رو داشته باشید.
             </p>
             <motion.button
@@ -82,7 +116,7 @@ export default function Login() {
           </div>
         </motion.div>
 
-        {/* بخش فرم ورود (سمت چپ در RTL) */}
+        {/* بخش فرم ورود */}
         <motion.div
           initial={{ opacity: 0, x: -30 }}
           animate={{ opacity: 1, x: 0 }}
@@ -95,7 +129,7 @@ export default function Login() {
             initial={{ scale: 0.8 }}
             animate={{ scale: 1 }}
             transition={{ duration: 0.4 }}
-            className="mb-6 h-28 w-28 sm:h-32 sm:w-32 object-contain"
+            className="mb-6 h-28 w-28 object-contain sm:h-32 sm:w-32"
           />
 
           <form onSubmit={handleSubmit} className="flex w-full max-w-md flex-col gap-4">
@@ -120,21 +154,25 @@ export default function Login() {
 
             <motion.button
               type="submit"
+              disabled={loginMutation.isPending}
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
-              className="mt-2 flex h-14 w-full items-center justify-center rounded-xl bg-[#1A0873] font-bold text-white shadow-lg transition-colors hover:bg-[#120554]"
+              className="mt-2 flex h-14 w-full items-center justify-center rounded-xl bg-[#1A0873] font-bold text-white shadow-lg transition-colors hover:bg-[#120554] disabled:opacity-60"
             >
-              وارد شدن
+              {loginMutation.isPending ? "در حال ورود..." : "وارد شدن"}
             </motion.button>
 
+            {/* 🔴 دکمه ورود با گوگل اختصاصی خودتان */}
             <motion.button
               type="button"
+              onClick={() => handleGoogleLogin()} // 👈 فراخوانی هوک با کلیک
+              disabled={googleLoginMutation.isPending}
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
-              className="flex h-14 w-full items-center justify-center gap-3 rounded-xl border border-gray-300 bg-gray-50 font-bold text-gray-800 transition-colors hover:bg-gray-100"
+              className="flex h-14 w-full items-center justify-center gap-3 rounded-xl border border-gray-300 bg-gray-50 font-bold text-gray-800 transition-colors hover:bg-gray-100 disabled:opacity-50"
             >
               <img src={GoogleIcon} alt="Google" className="h-7 w-7" />
-              <span>ورود با گوگل</span>
+              <span>{googleLoginMutation.isPending ? "در حال انتقال..." : "ورود با گوگل"}</span>
             </motion.button>
           </form>
         </motion.div>

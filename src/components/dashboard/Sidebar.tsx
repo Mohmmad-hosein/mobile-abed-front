@@ -4,11 +4,10 @@ import {
   User,
   Receipt,
   Heart,
-  Bookmark,
   ChevronRight,
   ChevronLeft,
   Wallet,
-  House,
+  Bell,  
 } from "lucide-react";
 import { useNavigate, useLocation } from "react-router-dom";
 
@@ -33,9 +32,9 @@ const navItems = [
   },
   {
     id: 4,
-    label: "نشان شده ها",
-    icon: Bookmark,
-    path: "/dashboard/bookmarks",
+    label: " اعلان ها",
+    icon: Bell ,
+    path: "/dashboard/Notification",
   },
 ];
 

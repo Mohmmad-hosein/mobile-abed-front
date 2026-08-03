@@ -94,7 +94,7 @@ const NewItemSection: React.FC = () => {
 
   return (
     <motion.div
-      className="mt-20 md:mt-36 lg:mt-56 flex relative flex-wrap justify-center w-full min-h-[600px] px-4 sm:px-6 lg:px-8"
+      className="mt-32 md:mt-36 lg:mt-56 flex relative flex-wrap justify-center w-full min-h-[600px] px-4 sm:px-6 lg:px-8"
       variants={sectionVariants}
       initial="hidden"
       whileInView="visible"

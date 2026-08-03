@@ -38,7 +38,7 @@ export default function Header() {
     },
     {
       title: localStorage.getItem("token") ? "پنل کاربر" : "ورود / ثبت نام",
-      link: localStorage.getItem("token") ? "/panel" : "/login",
+      link: localStorage.getItem("token") ? "/dashboard" : "/login",
     },
   ];
 

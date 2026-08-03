@@ -5,6 +5,7 @@ import { Toaster } from "react-hot-toast";
 import Header from "../components/layout/Header";
 import Footer from "../components/layout/footer";
 import BackToTop from "../components/ui/BackToTop";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 interface Props {
   children: ReactNode;
@@ -22,40 +23,40 @@ const MainLayout = ({ children }: Props) => {
   return (
     <div className="min-h-screen bg-white">
       {!hideLayout && <Header />}
-<Toaster
-  position="top-center"
-  toastOptions={{
-    duration: 3000,
+      <Toaster
+        position="top-center"
+        toastOptions={{
+          duration: 3000,
 
-    success: {
-      style: {
-        background: "#1A0873",
-        color: "#fff",
-        border: "2px solid #3D2AB5",
-      },
-      iconTheme: {
-        primary: "#fff",
-        secondary: "#1A0873",
-      },
-    },
+          success: {
+            style: {
+              background: "#1A0873",
+              color: "#fff",
+              border: "2px solid #3D2AB5",
+            },
+            iconTheme: {
+              primary: "#fff",
+              secondary: "#1A0873",
+            },
+          },
 
-    error: {
-      style: {
-        background: "#B91C1C",
-        color: "#fff",
-      },
-    },
+          error: {
+            style: {
+              background: "#B91C1C",
+              color: "#fff",
+            },
+          },
 
-    loading: {
-      style: {
-        background: "#1A0873",
-        color: "#fff",
-      },
-    },
-  }}
-/>
+          loading: {
+            style: {
+              background: "#1A0873",
+              color: "#fff",
+            },
+          },
+        }}
+      />
 
-<BackToTop />
+      <BackToTop />
 
       <main>{children}</main>
 

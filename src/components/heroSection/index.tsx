@@ -113,7 +113,7 @@ export default function HeroSection() {
         animate={{ opacity: 1 }}
         transition={{ delay: 0.6 }}
         className="
-    w-full
+    w-8/10
     sm:w-[85%]
     md:w-[600px]
     lg:w-[730px]

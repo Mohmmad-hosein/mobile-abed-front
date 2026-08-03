@@ -12,7 +12,7 @@ import DashboardLayout from "../layout/DashboardLayout";
 import DashboardInfoPage from "../pages/dashboard";
 import UserPayList from "../pages/dashboard/UserPayList";
 import Favorites from "../pages/dashboard/Favorites";
-import Bookmarks from "../pages/dashboard/Bookmarks";
+import Notification from "../pages/dashboard/Notification";
 
 const AppRouter = () => {
   return (
@@ -31,7 +31,7 @@ const AppRouter = () => {
             <Route index element={<DashboardInfoPage />} />
             <Route path="payments" element={<UserPayList />} />
             <Route path="Favorites" element={<Favorites />} />
-            <Route path="Bookmarks" element={<Bookmarks />} />
+            <Route path="Notification" element={<Notification />} />
           </Route>
         </Routes>
       </MainLayout>

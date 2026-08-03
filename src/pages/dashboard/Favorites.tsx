@@ -1,9 +1,175 @@
-import React from 'react'
+import { Trash2, Loader2 } from "lucide-react";
+import React, { useState, useEffect } from "react";
+import Pagination from "../../components/ui/Pagination"; // مسیر کامپوننت را در صورت نیاز اصلاح کنید
 
 export default function Favorites() {
+  const [favorites, setFavorites] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const ITEMS_PER_PAGE = 4;
+
+  useEffect(() => {
+    const fetchFavorites = async () => {
+      setIsLoading(true);
+      try {
+        // TODO: این بخش را با API واقعی خود برای دریافت لیست علاقه‌مندی‌ها جایگزین کنید
+        // const response = await axios.get('/api/user/favorites');
+        // setFavorites(response.data);
+
+        // --- دیتای تستی برای تست صفحه‌بندی (12 آیتم) ---
+        const mockData = Array.from({ length: 12 }).map((_, index) => ({
+          id: index + 1,
+          title: index % 2 === 0 ? `iphone ${17 - index} pro max` : `Samsung S${24 - index} Ultra`,
+          price: `${100 - index * 5} میلیون`,
+          image: "", // آدرس عکس
+        }));
+        
+        setTimeout(() => {
+          setFavorites(mockData);
+          setIsLoading(false);
+        }, 1000);
+
+      } catch (error) {
+        console.error("خطا در دریافت اطلاعات:", error);
+        setIsLoading(false);
+      }
+    };
+
+    fetchFavorites();
+  }, []);
+
+  const handleDeleteItem = (id) => {
+    // TODO: اتصال به API حذف آیتم از علاقه‌مندی‌ها
+    console.log("Delete favorite item:", id);
+    setFavorites(favorites.filter(item => item.id !== id));
+  };
+
+  const handleAddToCart = (id) => {
+    // TODO: افزودن یک آیتم خاص به سبد خرید
+    console.log("Add to cart item:", id);
+  };
+
+  const handleAddToCartAll = () => {
+    // TODO: افزودن کل لیست به سبد خرید
+    console.log("Add all to cart");
+  };
+
+  const handleDeleteAll = () => {
+    // TODO: پاک کردن کل لیست علاقه‌مندی‌ها
+    console.log("Delete all favorites");
+    setFavorites([]);
+  };
+
+  // ================= محاسبات صفحه‌بندی =================
+  const totalPages = Math.ceil(favorites.length / ITEMS_PER_PAGE);
+  const indexOfLastItem = currentPage * ITEMS_PER_PAGE;
+  const indexOfFirstItem = indexOfLastItem - ITEMS_PER_PAGE;
+  const currentItems = favorites.slice(indexOfFirstItem, indexOfLastItem);
+
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   return (
-    <div>
+    <div className="flex flex-col h-full w-full items-center justify-start text-xl md:text-2xl font-bold text-gray-700 py-6 md:py-0">
       
+      {/* هدر جدول - فقط در دسکتاپ نمایش داده می‌شود */}
+      <div className="hidden text-xl mt-6 md:flex w-5/6 text-black p-3 border-dashed border-b-4">
+        <h1 className="w-1/4 text-center">دکمه دسترسی</h1>
+        <h1 className="w-1/4 text-center">قیمت</h1>
+        <h1 className="w-1/4 text-center">نام موبایل</h1>
+        <h1 className="w-1/4 text-center">عکس موبایل</h1>
+      </div>
+
+      {/* بخش نمایش کارت‌ها یا حالت لودینگ */}
+      <div className="flex flex-col gap-4 w-full items-center mt-4 md:mt-8 min-h-[350px]">
+        {isLoading ? (
+          <div className="flex flex-col items-center justify-center h-full mt-20 text-[#430AFF]">
+            <Loader2 className="w-12 h-12 animate-spin mb-4" />
+            <p className="text-lg font-bold">در حال دریافت اطلاعات...</p>
+          </div>
+        ) : currentItems.length === 0 ? (
+          <div className="mt-20 text-xl font-normal text-gray-500">
+            لیست علاقه‌مندی‌های شما خالی است.
+          </div>
+        ) : (
+          currentItems.map((item) => (
+            <div key={item.id} className="w-[90%] md:w-5/6 shadow-2xl border-2 bg-[#12054F]/70 h-auto md:h-[70px] flex flex-col-reverse md:flex-row rounded-2xl p-4 md:p-0 gap-4 md:gap-0 items-center justify-between transition-all hover:scale-[1.01]">
+              
+              {/* دکمه‌های دسترسی */}
+              <div className="w-full md:w-1/4 h-full gap-2 flex justify-center items-center text-white">
+                <button 
+                  onClick={() => handleDeleteItem(item.id)}
+                  className="bg-red-500 text-white p-2 rounded-lg hover:bg-red-600 transition-colors"
+                >
+                  <Trash2 className="w-5 h-5" />
+                </button>
+                <button 
+                  onClick={() => handleAddToCart(item.id)}
+                  className="bg-[#0D004D] text-sm md:text-lg text-white px-4 py-2 rounded-lg hover:bg-[#180280] transition-colors"
+                >
+                  خرید
+                </button>
+              </div>
+
+              {/* قیمت */}
+              <div className="w-full md:w-1/4 h-full flex justify-center items-center text-white text-base md:text-xl">
+                <span className="md:hidden text-gray-300 ml-2 font-normal">قیمت: </span>
+                {item.price}
+              </div>
+
+              {/* نام موبایل */}
+              <div className="w-full md:w-1/4 h-full flex justify-center items-center text-white text-base md:text-xl dir-ltr">
+                {item.title}
+              </div>
+
+              {/* عکس موبایل */}
+              <div className="w-full md:w-1/4 h-full flex justify-center items-center">
+                <div className="w-[58px] h-[58px] bg-[#D9D9D9] rounded-lg overflow-hidden flex items-center justify-center">
+                  {item.image ? (
+                    <img src={item.image} alt={item.title} className="w-full h-full object-cover" />
+                  ) : (
+                    <span className="text-xs text-gray-500">بدون عکس</span>
+                  )}
+                </div>
+              </div>
+
+            </div>
+          ))
+        )}
+      </div>
+
+      {/* دکمه‌های عملیاتی پایین و صفحه‌بندی */}
+      <div className="w-[90%] md:w-5/6 h-auto md:h-32 flex flex-col md:flex-row justify-around items-center gap-6 md:gap-0 mt-8 md:mt-4 mb-10">
+        
+        <button 
+          onClick={handleAddToCartAll}
+          disabled={favorites.length === 0}
+          className="bg-[#430AFF] disabled:bg-gray-400 w-full max-w-[200px] h-[75px] text-white shadow-2xl rounded-lg font-black transition-all hover:bg-[#3200cc]"
+        >
+          افزودن به سبد خرید
+        </button>
+
+        {!isLoading && totalPages > 1 && (
+          <Pagination
+            currentPage={currentPage} 
+            totalPages={totalPages} 
+            onPageChange={handlePageChange} 
+          />
+        )}
+
+        <button 
+          onClick={handleDeleteAll}
+          disabled={favorites.length === 0}
+          className="bg-[#430AFF]/25 disabled:bg-gray-200 disabled:text-gray-400 w-full max-w-[200px] h-[75px] text-black shadow-2xl rounded-lg font-black hover:bg-red-500 hover:text-white transition-colors"
+        >
+          حذف تمامی موارد
+        </button>
+        
+      </div>
+
     </div>
-  )
+  );
 }
